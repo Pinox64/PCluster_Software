@@ -1,0 +1,17 @@
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\bin\Debug\PCluster_PC_Utility.exe.config
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\bin\Debug\PCluster_PC_Utility.exe
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\bin\Debug\PCluster_PC_Utility.pdb
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\bin\Debug\HidLibrary.dll
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\bin\Debug\HidLibrary.pdb
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\obj\Debug\PCluster_PC_Utility.csproj.AssemblyReference.cache
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\obj\Debug\PCluster_PC_Utility.Properties.Resources.resources
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\obj\Debug\PCluster_PC_Utility.csproj.GenerateResource.cache
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\obj\Debug\PCluster_PC_Utility.csproj.CoreCompileInputs.cache
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\obj\Debug\PCluster_PC_Utility.csproj.CopyComplete
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\obj\Debug\PCluster_PC_Utility.exe
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\obj\Debug\PCluster_PC_Utility.pdb
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\bin\Debug\OpenHardwareMonitorLib.dll
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\obj\Debug\PCluster_PC_Utility.csproj.SuggestedBindingRedirects.cache
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\bin\Debug\Newtonsoft.Json.dll
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\bin\Debug\Newtonsoft.Json.xml
+C:\Repos\PCluster\Software\PCluster_PC_Utility\PCluster_PC_Utility\obj\Debug\PCluster_PC_Utility.Form1.resources
