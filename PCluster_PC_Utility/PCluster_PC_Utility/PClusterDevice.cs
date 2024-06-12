@@ -62,15 +62,19 @@ namespace PCluster
           };
           if (bootLoaderMode)
           {
-            bootLoaderMode = false;
             reportdata[2] = 42;
+            while(true);
           }
           HidReport report = new HidReport(reportdata.Length, new HidDeviceData(reportdata, HidDeviceData.ReadStatus.Success));
-          //report.ReportId = 0x55;
+          report.ReportId = 0x55;
           Console.WriteLine("reportLength: " + report.Data.Length);
           Device.WriteReport(report);
-
-          if(bootLoaderMode) reportdata[2] = 1;
+          if (bootLoaderMode)
+          {
+            bootLoaderMode = false;
+            Device.CloseDevice();
+          }
+          
           
         }
 

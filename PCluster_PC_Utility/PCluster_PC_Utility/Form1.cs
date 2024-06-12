@@ -17,6 +17,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Runtime.Remoting.Contexts;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using static PCluster_PC_Utility.Form1;
 
 
 namespace PCluster_PC_Utility
@@ -25,6 +26,7 @@ namespace PCluster_PC_Utility
   public partial class Form1 : Form
   {
     PClusterDevice PCluster1;
+    private ManualResetEvent pClusterInitialized = new ManualResetEvent(false);
     string[] DisplayItemsValues = { "OFF", "CPU Usage", "CPU Temp", "Memory Usage", "GPU Usage", "GPU Temp", "Disk Speed", "Disk Usage", "Internet Speed" };
     static float cpuTemp;
     // CPU Usage
@@ -68,24 +70,22 @@ namespace PCluster_PC_Utility
     private void Form1_Load(object sender, EventArgs e)
     {
       device = HidDevices.Enumerate(0x1A86, 0xE429).FirstOrDefault();
+    Thread hardwareUpdater = new Thread(ReportSystemInfo);
+      hardwareUpdater.Priority = ThreadPriority.Highest;
+      hardwareUpdater.Start();
       //Console.WriteLine(device.Capabilities.FeatureReportByteLength);
-      PCluster1 = new PClusterDevice(device);
+      pClusterInitialized.WaitOne();
 
       comboBox1.Items.Clear();
       comboBox2.Items.Clear();
       comboBox3.Items.Clear();
       comboBox4.Items.Clear();
-      foreach (DisplayInfo displayInfo in PCluster1.DisplayInfos)
-      {
-        comboBox1.Items.Add(displayInfo.MenuValue);
-        comboBox1.SelectedIndex = 0;
-        comboBox2.Items.Add(displayInfo.MenuValue);
-        comboBox2.SelectedIndex = 0;
-        comboBox3.Items.Add(displayInfo.MenuValue);
-        comboBox3.SelectedIndex = 0;
-        comboBox4.Items.Add(displayInfo.MenuValue);
-        comboBox4.SelectedIndex = 0;
-      }
+
+      
+        
+          
+  
+      
 
 
       // Load JSON file
@@ -100,6 +100,18 @@ namespace PCluster_PC_Utility
       Console.WriteLine("Display2: " + config.Display2);
       Console.WriteLine("Display3: " + config.Display3);
       Console.WriteLine("Display4: " + config.Display4);
+
+      foreach (string displayInfo in DisplayItemsValues)
+      {
+        comboBox1.Items.Add(displayInfo);
+        comboBox1.SelectedIndex = 0;
+        comboBox2.Items.Add(displayInfo);
+        comboBox2.SelectedIndex = 0;
+        comboBox3.Items.Add(displayInfo);
+        comboBox3.SelectedIndex = 0;
+        comboBox4.Items.Add(displayInfo);
+        comboBox4.SelectedIndex = 0;
+      }
       comboBox1.SelectedIndex = config.Display1;
       comboBox2.SelectedIndex = config.Display2;
       comboBox3.SelectedIndex = config.Display3;
@@ -107,9 +119,13 @@ namespace PCluster_PC_Utility
       comboBox5.SelectedIndex = 3;
 
       c.Open();
-      Thread hardwareUpdater = new Thread(ReportSystemInfo);
-      hardwareUpdater.Priority = ThreadPriority.Highest;
-      hardwareUpdater.Start();
+      
+
+
+      
+      
+      
+
     }
 
     public class Config //Configuration save of the values to show on each display
@@ -122,9 +138,12 @@ namespace PCluster_PC_Utility
 
     void ReportSystemInfo()
     {
+      PCluster1 = new PClusterDevice(device);
       byte[] displayableValues = new byte[9];
       PerformanceCounter bytesSentCounter = new PerformanceCounter("Network Interface", "Bytes Sent/sec");
       PerformanceCounter bytesReceivedCounter = new PerformanceCounter("Network Interface", "Bytes Received/sec");
+      pClusterInitialized.Set(); // Signal that PCluster1 is initialized
+
       while (true)
       {
         Thread.Sleep(100);
@@ -232,8 +251,8 @@ namespace PCluster_PC_Utility
           // ... you can access any other system information you want here
           try
           {
-            this.Invoke(new MethodInvoker(delegate
-            {
+            
+            
               PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "CPU Usage").Value = (byte)cpuUsage;
               PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "CPU Temp").Value = (byte)cpuTemp;
               PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "GPU Usage").Value = (byte)gpuUsage;
@@ -241,7 +260,7 @@ namespace PCluster_PC_Utility
               PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "Memory Usage").Value = (byte)memoryUsage;
               //PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "Internet Speed").Value = (byte)(bytesSentCounter.NextValue() + bytesReceivedCounter.NextValue()) ;
               PCluster1.update();
-            }));
+            
           }
           catch (Exception ex)
           {
@@ -261,38 +280,78 @@ namespace PCluster_PC_Utility
 
     private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
     {
-      try
+      if (InvokeRequired)
       {
-        PCluster1.disp1.DisplayedInfo = (byte)PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == comboBox1.Text).ID;
+        Invoke(new Action(() => comboBox2_SelectedIndexChanged(sender, e)));
       }
-      catch { Console.WriteLine("PCluster1 was null"); }
+      else
+      {
+        try
+        {
+          PCluster1.disp1.DisplayedInfo = (byte)PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == comboBox1.Text).ID;
+        }
+        catch
+        {
+          Console.WriteLine("PCluster1 was null");
+        }
+      }
     }
 
     private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
     {
-      try
+      if (InvokeRequired)
       {
-        PCluster1.disp2.DisplayedInfo = (byte)PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == comboBox2.Text).ID;
+        Invoke(new Action(() => comboBox2_SelectedIndexChanged(sender, e)));
       }
-      catch { Console.WriteLine("PCluster1 was null"); }
+      else
+      {
+        try
+        {
+          PCluster1.disp2.DisplayedInfo = (byte)PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == comboBox2.Text).ID;
+        }
+        catch
+        {
+          Console.WriteLine("PCluster1 was null");
+        }
+      }
     }
 
     private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
     {
-      try
+      if (InvokeRequired)
       {
-        PCluster1.disp3.DisplayedInfo = (byte)PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == comboBox3.Text).ID;
+        Invoke(new Action(() => comboBox2_SelectedIndexChanged(sender, e)));
       }
-      catch { Console.WriteLine("PCluster1 was null"); }
+      else
+      {
+        try
+        {
+          PCluster1.disp3.DisplayedInfo = (byte)PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == comboBox3.Text).ID;
+        }
+        catch
+        {
+          Console.WriteLine("PCluster1 was null");
+        }
+      }
     }
 
     private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
     {
-      try
+      if (InvokeRequired)
       {
-        PCluster1.disp4.DisplayedInfo = (byte)PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == comboBox4.Text).ID;
+        Invoke(new Action(() => comboBox2_SelectedIndexChanged(sender, e)));
       }
-      catch { Console.WriteLine("PCluster1 was null"); }
+      else
+      {
+        try
+        {
+          PCluster1.disp4.DisplayedInfo = (byte)PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == comboBox4.Text).ID;
+        }
+        catch
+        {
+          Console.WriteLine("PCluster1 was null");
+        }
+      }
     }
 
     private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
@@ -381,20 +440,8 @@ namespace PCluster_PC_Utility
 
     private void buttonBootloader_Click(object sender, EventArgs e)
     {
-      try
-      {
-        this.Invoke(new MethodInvoker(delegate
-        {
-          PCluster1.bootLoaderMode = true;
-          //PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "Internet Speed").Value = (byte)(bytesSentCounter.NextValue() + bytesReceivedCounter.NextValue()) ;
-          PCluster1.update();
-        }));
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine(ex);
-        Thread.CurrentThread.Abort();
-      }
+      PCluster1.bootLoaderMode = true;
+      
     }
   }
 }
