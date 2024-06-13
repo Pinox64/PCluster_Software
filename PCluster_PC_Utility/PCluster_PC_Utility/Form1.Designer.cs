@@ -50,7 +50,7 @@ namespace PCluster_PC_Utility
       this.exitMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
       this.statusStrip1 = new System.Windows.Forms.StatusStrip();
       this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-      this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+      this.toolStripConnectionStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
       this.buttonBootloader = new System.Windows.Forms.Button();
       ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
       this.contextMenuStrip.SuspendLayout();
@@ -239,7 +239,7 @@ namespace PCluster_PC_Utility
       // 
       this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.toolStripStatusLabel2});
+            this.toolStripConnectionStatusLabel});
       this.statusStrip1.Location = new System.Drawing.Point(0, 148);
       this.statusStrip1.Name = "statusStrip1";
       this.statusStrip1.Size = new System.Drawing.Size(800, 22);
@@ -251,11 +251,11 @@ namespace PCluster_PC_Utility
       this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
       this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
       // 
-      // toolStripStatusLabel2
+      // toolStripConnectionStatusLabel
       // 
-      this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-      this.toolStripStatusLabel2.Size = new System.Drawing.Size(117, 17);
-      this.toolStripStatusLabel2.Text = "Device Disconnected";
+      this.toolStripConnectionStatusLabel.Name = "toolStripConnectionStatusLabel";
+      this.toolStripConnectionStatusLabel.Size = new System.Drawing.Size(117, 17);
+      this.toolStripConnectionStatusLabel.Text = "Device Disconnected";
       // 
       // buttonBootloader
       // 
@@ -319,7 +319,7 @@ namespace PCluster_PC_Utility
     private ToolStripMenuItem exitMenuItem2;
     private StatusStrip statusStrip1;
     private ToolStripStatusLabel toolStripStatusLabel1;
-    private ToolStripStatusLabel toolStripStatusLabel2;
+    private ToolStripStatusLabel toolStripConnectionStatusLabel;
         private Button buttonBootloader;
     }
 }

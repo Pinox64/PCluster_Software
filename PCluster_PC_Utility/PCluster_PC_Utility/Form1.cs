@@ -139,6 +139,7 @@ namespace PCluster_PC_Utility
     void ReportSystemInfo()
     {
       PCluster1 = new PClusterDevice(device);
+      bool oldPclusterStatus = false;
       byte[] displayableValues = new byte[9];
       PerformanceCounter bytesSentCounter = new PerformanceCounter("Network Interface", "Bytes Sent/sec");
       PerformanceCounter bytesReceivedCounter = new PerformanceCounter("Network Interface", "Bytes Received/sec");
@@ -267,14 +268,17 @@ namespace PCluster_PC_Utility
               Console.WriteLine(ex);
               Thread.CurrentThread.Abort();
           }
-
-
         }
 
         /*
          HidReport report = new HidReport(data.Length, new HidDeviceData(data, HidDeviceData.ReadStatus.Success));
          device.WriteReport(report);
         */
+        if (PCluster1.Status != oldPclusterStatus)
+        {
+          oldPclusterStatus = PCluster1.Status;
+          toolStripConnectionStatusLabel.Text = PCluster1.Status ? "Connected" : "Disconnected";
+        }
       }
     }
 
