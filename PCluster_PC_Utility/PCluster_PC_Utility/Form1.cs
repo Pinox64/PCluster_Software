@@ -150,124 +150,115 @@ namespace PCluster_PC_Utility
         Thread.Sleep(100);
         foreach (var hardware in c.Hardware)
         {
+            switch (hardware.HardwareType)
+                    {
+                        case HardwareType.CPU:
+                            // only fire the update when found
+                            hardware.Update();
 
-          if (hardware.HardwareType == HardwareType.CPU)
-          {
-            // only fire the update when found
-            hardware.Update();
+                            // loop through the data
+                            foreach (var sensor in hardware.Sensors)
+                              if (sensor.SensorType == SensorType.Temperature && sensor.Name.Contains("CPU Package"))
+                              {
+                                // store
+                                cpuTemp = sensor.Value.GetValueOrDefault();
+                                // print to console
+                                System.Diagnostics.Debug.WriteLine("cpuTemp: " + sensor.Value.GetValueOrDefault());
 
-            // loop through the data
-            foreach (var sensor in hardware.Sensors)
-              if (sensor.SensorType == SensorType.Temperature && sensor.Name.Contains("CPU Package"))
-              {
-                // store
-                cpuTemp = sensor.Value.GetValueOrDefault();
-                // print to console
-                System.Diagnostics.Debug.WriteLine("cpuTemp: " + sensor.Value.GetValueOrDefault());
-
-              }
-              else if (sensor.SensorType == SensorType.Load && sensor.Name.Contains("CPU Total"))
-              {
-                // store
-                cpuUsage = sensor.Value.GetValueOrDefault();
-                // print to console
-                System.Diagnostics.Debug.WriteLine("cpuUsage: " + sensor.Value.GetValueOrDefault());
-              }
-              else if (sensor.SensorType == SensorType.Power && sensor.Name.Contains("CPU Package"))
-              {
-                // store
-                cpuPowerDrawPackage = sensor.Value.GetValueOrDefault();
-                // print to console
-                System.Diagnostics.Debug.WriteLine("CPU Power Draw - Package: " + sensor.Value.GetValueOrDefault());
-
-
-              }
-              else if (sensor.SensorType == SensorType.Clock && sensor.Name.Contains("CPU Core #1"))
-              {
-                // store
-                cpuFrequency = sensor.Value.GetValueOrDefault();
-                // print to console
-                System.Diagnostics.Debug.WriteLine("cpuFrequency: " + sensor.Value.GetValueOrDefault());
-              }
-          }
+                              }
+                              else if (sensor.SensorType == SensorType.Load && sensor.Name.Contains("CPU Total"))
+                              {
+                                // store
+                                cpuUsage = sensor.Value.GetValueOrDefault();
+                                // print to console
+                                System.Diagnostics.Debug.WriteLine("cpuUsage: " + sensor.Value.GetValueOrDefault());
+                              }
+                              else if (sensor.SensorType == SensorType.Power && sensor.Name.Contains("CPU Package"))
+                              {
+                                // store
+                                cpuPowerDrawPackage = sensor.Value.GetValueOrDefault();
+                                // print to console
+                                System.Diagnostics.Debug.WriteLine("CPU Power Draw - Package: " + sensor.Value.GetValueOrDefault());
 
 
-          // Targets AMD & Nvidia GPUS
-          if (hardware.HardwareType == HardwareType.GpuAti || hardware.HardwareType == HardwareType.GpuNvidia)
-          {
-            // only fire the update when found
-            hardware.Update();
+                              }
+                              else if (sensor.SensorType == SensorType.Clock && sensor.Name.Contains("CPU Core #1"))
+                              {
+                                // store
+                                cpuFrequency = sensor.Value.GetValueOrDefault();
+                                // print to console
+                                System.Diagnostics.Debug.WriteLine("cpuFrequency: " + sensor.Value.GetValueOrDefault());
+                            }
+                            break;
+                        case HardwareType.GpuAti: case HardwareType.GpuNvidia:
 
-            // loop through the data
-            foreach (var sensor in hardware.Sensors)
-              if (sensor.SensorType == SensorType.Temperature && sensor.Name.Contains("GPU Core"))
-              {
-                // store
-                gpuTemp = sensor.Value.GetValueOrDefault();
-                // print to console
-                System.Diagnostics.Debug.WriteLine("gpuTemp: " + sensor.Value.GetValueOrDefault());
-              }
-              else if (sensor.SensorType == SensorType.Load && sensor.Name.Contains("GPU Core"))
-              {
-                // store
-                gpuUsage = sensor.Value.GetValueOrDefault();
-                // print to console
-                System.Diagnostics.Debug.WriteLine("gpuUsage: " + sensor.Value.GetValueOrDefault());
-              }
-              else if (sensor.SensorType == SensorType.Clock && sensor.Name.Contains("GPU Core"))
-              {
-                // store
-                gpuCoreFrequency = sensor.Value.GetValueOrDefault();
-                // print to console
-                System.Diagnostics.Debug.WriteLine("gpuCoreFrequency: " + sensor.Value.GetValueOrDefault());
-              }
-              else if (sensor.SensorType == SensorType.Clock && sensor.Name.Contains("GPU Memory"))
-              {
-                // store
-                gpuMemoryFrequency = sensor.Value.GetValueOrDefault();
-                // print to console
-                System.Diagnostics.Debug.WriteLine("gpuMemoryFrequency: " + sensor.Value.GetValueOrDefault());
-              }
+                            // only fire the update when found
+                            hardware.Update();
 
-          }
+                            // loop through the data
+                            foreach (var sensor in hardware.Sensors)
+                                if (sensor.SensorType == SensorType.Temperature && sensor.Name.Contains("GPU Core"))
+                                {
+                                    // store
+                                    gpuTemp = sensor.Value.GetValueOrDefault();
+                                    // print to console
+                                    System.Diagnostics.Debug.WriteLine("gpuTemp: " + sensor.Value.GetValueOrDefault());
+                                }
+                                else if (sensor.SensorType == SensorType.Load && sensor.Name.Contains("GPU Core"))
+                                {
+                                    // store
+                                    gpuUsage = sensor.Value.GetValueOrDefault();
+                                    // print to console
+                                    System.Diagnostics.Debug.WriteLine("gpuUsage: " + sensor.Value.GetValueOrDefault());
+                                }
+                                else if (sensor.SensorType == SensorType.Clock && sensor.Name.Contains("GPU Core"))
+                                {
+                                    // store
+                                    gpuCoreFrequency = sensor.Value.GetValueOrDefault();
+                                    // print to console
+                                    System.Diagnostics.Debug.WriteLine("gpuCoreFrequency: " + sensor.Value.GetValueOrDefault());
+                                }
+                                else if (sensor.SensorType == SensorType.Clock && sensor.Name.Contains("GPU Memory"))
+                                {
+                                    // store
+                                    gpuMemoryFrequency = sensor.Value.GetValueOrDefault();
+                                    // print to console
+                                    System.Diagnostics.Debug.WriteLine("gpuMemoryFrequency: " + sensor.Value.GetValueOrDefault());
+                                }
+                            break;
+                        case HardwareType.RAM:
 
-          if (hardware.HardwareType == HardwareType.RAM)
-          {
-            // only fire the update when found
-            hardware.Update();
+                            // only fire the update when found
+                            hardware.Update();
 
-            // loop through the data
-            foreach (var sensor in hardware.Sensors)
-              if (sensor.SensorType == SensorType.Load)
-              {
-                // store
-                memoryUsage = sensor.Value.GetValueOrDefault();
-                // print to console
-                System.Diagnostics.Debug.WriteLine("RAM Usage: " + sensor.Value.GetValueOrDefault());
-              }
+                            // loop through the data
+                            foreach (var sensor in hardware.Sensors)
+                                if (sensor.SensorType == SensorType.Load)
+                                {
+                                    // store
+                                    memoryUsage = sensor.Value.GetValueOrDefault();
+                                    // print to console
+                                    System.Diagnostics.Debug.WriteLine("RAM Usage: " + sensor.Value.GetValueOrDefault());
+                                }
+                            break;
+                        // ... you can access any other system information you want here
 
-
-          }
-
-          // ... you can access any other system information you want here
-          try
-          {
-            
-            
-              PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "CPU Usage").Value = (byte)cpuUsage;
-              PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "CPU Temp").Value = (byte)cpuTemp;
-              PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "GPU Usage").Value = (byte)gpuUsage;
-              PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "GPU Temp").Value = (byte)gpuTemp;
-              PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "Memory Usage").Value = (byte)memoryUsage;
-              //PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "Internet Speed").Value = (byte)(bytesSentCounter.NextValue() + bytesReceivedCounter.NextValue()) ;
-              PCluster1.update();
-            
-          }
+                    };
+            try
+            {
+                PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "CPU Usage").Value = (byte)cpuUsage;
+                PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "CPU Temp").Value = (byte)cpuTemp;
+                PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "GPU Usage").Value = (byte)gpuUsage;
+                PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "GPU Temp").Value = (byte)gpuTemp;
+                PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "Memory Usage").Value = (byte)memoryUsage;
+                //PCluster1.DisplayInfos.FirstOrDefault(item => item.MenuValue == "Internet Speed").Value = (byte)(bytesSentCounter.NextValue() + bytesReceivedCounter.NextValue()) ;
+                PCluster1.update();
+            }
           catch (Exception ex)
-          {
-              Console.WriteLine(ex);
-              Thread.CurrentThread.Abort();
-          }
+            {
+                Console.WriteLine(ex);
+                Thread.CurrentThread.Abort();
+            }
         }
 
         /*
