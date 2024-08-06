@@ -96,21 +96,31 @@ namespace PCluster
       Device = device;
     }
 
-    private void InitializeDisplayInfos()
-    {
-      DisplayInfos.Add(new DisplayInfo(0, "OFF", 0));
-      DisplayInfos.Add(new DisplayInfo(1, "CPU Usage", 0));
-      DisplayInfos.Add(new DisplayInfo(2, "CPU Temp", 0));
-      DisplayInfos.Add(new DisplayInfo(3, "Memory Usage", 0));
-      DisplayInfos.Add(new DisplayInfo(4, "GPU Usage", 0));
-      DisplayInfos.Add(new DisplayInfo(5, "GPU Temp", 0));
-      //DisplayInfos.Add(new DisplayInfo(6, "Disk Speed", 0));
-      //DisplayInfos.Add(new DisplayInfo(7, "Disk Usage", 0));
-      //DisplayInfos.Add(new DisplayInfo(8, "Internet Speed", 0));
-    }
-  }
+        private void InitializeDisplayInfos()
+        {
+            DisplayInfos.Add(new DisplayInfo(0, "OFF", 0));
+            DisplayInfos.Add(new DisplayInfo(1, "CPU Usage", 0));
+            DisplayInfos.Add(new DisplayInfo(2, "CPU Temp", 0));
+            DisplayInfos.Add(new DisplayInfo(3, "Memory Usage", 0));
+            DisplayInfos.Add(new DisplayInfo(4, "GPU Usage", 0));
+            DisplayInfos.Add(new DisplayInfo(5, "GPU Temp", 0));
+            DisplayInfos.Add(new DisplayInfo(6, "Disk Speed", 0));
+            DisplayInfos.Add(new DisplayInfo(7, "Disk Usage", 0));
+            DisplayInfos.Add(new DisplayInfo(8, "Internet Speed", 0));
+            DisplayInfos.Add(new DisplayInfo(9, "CPU Power Draw", 0));
+            DisplayInfos.Add(new DisplayInfo(10, "CPU Frequency", 0));
+            DisplayInfos.Add(new DisplayInfo(11, "GPU Core Frequency", 0));
+            DisplayInfos.Add(new DisplayInfo(12, "GPU Memory Frequency", 0));
 
-  public class DisplayInfo
+            // Adding CPU Core usages
+            for (int i = 0; i < Environment.ProcessorCount; i++)
+            {
+                DisplayInfos.Add(new DisplayInfo(13 + i, $"CPU Core {i + 1} Usage", 0));
+            }
+        }
+    }
+
+    public class DisplayInfo
   {
     public int ID { get; set; }
     public byte Value { get; set; }
