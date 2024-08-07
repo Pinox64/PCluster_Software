@@ -26,6 +26,7 @@ namespace PCluster_PC_Utility
     public partial class Form1 : Form
     {
         PClusterDevice PCluster1;
+        Thread hardwareUpdater;
         private ManualResetEvent pClusterInitialized = new ManualResetEvent(false);
         string[] DisplayItemsValues = { "OFF", "CPU Usage", "CPU Temp", "Memory Usage", "GPU Usage", "GPU Temp", "Disk Speed", "Disk Usage", "Internet Speed", "CPU Power Draw", "CPU Frequency", "GPU Core Frequency", "GPU Memory Frequency" };
         static float cpuTemp;
@@ -67,7 +68,7 @@ namespace PCluster_PC_Utility
         private void Form1_Load(object sender, EventArgs e)
         {
             device = HidDevices.Enumerate(0x1A86, 0xE429).FirstOrDefault();
-            Thread hardwareUpdater = new Thread(ReportSystemInfo);
+            hardwareUpdater = new Thread(ReportSystemInfo);
             hardwareUpdater.Priority = ThreadPriority.Highest;
             hardwareUpdater.Start();
             //Console.WriteLine(device.Capabilities.FeatureReportByteLength);
@@ -419,7 +420,7 @@ namespace PCluster_PC_Utility
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (applicationExiting == false)
+            if (e.CloseReason == CloseReason.UserClosing && applicationExiting == false)
             {
                 e.Cancel = true;
                 this.WindowState = FormWindowState.Minimized;
@@ -429,7 +430,12 @@ namespace PCluster_PC_Utility
                 this.ShowInTaskbar = false;
                 notifyIcon1.Visible = true;
             }
-
+            else
+            {
+                // Allow the form to close normally
+                notifyIcon1.Visible = false;  // Hide the icon if the form is actually closing
+                hardwareUpdater.Abort();
+            }
         }
 
         private void exitMenuItem2_Click_1(object sender, EventArgs e)
@@ -449,6 +455,26 @@ namespace PCluster_PC_Utility
         {
             PCluster1.bootLoaderMode = true;
 
+        }
+
+        private void buttonRst_Click(object sender, EventArgs e)
+        {
+            PCluster1.reset = true;
+        }
+
+        private void btnDialColor_Click(object sender, EventArgs e)
+        {
+            ColorDialog MyDialog = new ColorDialog();
+            // Keeps the user from selecting a custom color.
+            MyDialog.AllowFullOpen = false;
+            // Allows the user to get help. (The default is false.)
+            MyDialog.ShowHelp = true;
+            // Sets the initial color select to the current text color.
+            MyDialog.Color = btnDialColor.BackColor;
+
+            // Update the text box color if the user clicks OK 
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+                btnDialColor.BackColor = MyDialog.Color;
         }
     }
 }
