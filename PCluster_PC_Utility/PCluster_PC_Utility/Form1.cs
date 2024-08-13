@@ -88,7 +88,7 @@ namespace PCluster_PC_Utility
             comboBox4.Items.Clear();
 
             // Load JSON file
-            string jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json");
+            string jsonFilePath = Path.Combine("config.json");
             string jsonContent = File.ReadAllText(jsonFilePath);
 
             // Deserialize JSON to Config object
@@ -115,8 +115,17 @@ namespace PCluster_PC_Utility
             comboBox2.SelectedIndex = config.Display2;
             comboBox3.SelectedIndex = config.Display3;
             comboBox4.SelectedIndex = config.Display4;
-            comboBox5.SelectedIndex = 3;
+            comboBox5.SelectedIndex = config.DialMode;
+            trackBar1.Value = config.DialBrightness;
+            trackBar2.Value = config.NeedleBrightness;
+            // Set the button colors based on the config
+            btnDialColor.BackColor = HexStringToColor(config.DialColor);
+            btnNeedleColor.BackColor = HexStringToColor(config.NeedleColor);
 
+            PCluster1.LEDBrightness = calculateBrightness(trackBar1.Value);
+            PCluster1.LEDneedleBrightness = calculateBrightness(trackBar2.Value);
+            PCluster1.LEDdialColor = btnDialColor.BackColor;
+            PCluster1.LEDneedleColor = btnNeedleColor.BackColor;
             c.Open();
         }
 
@@ -156,6 +165,12 @@ namespace PCluster_PC_Utility
             public int Display2 { get; set; }
             public int Display3 { get; set; }
             public int Display4 { get; set; }
+            public string DialColor { get; set; }
+            public string NeedleColor { get; set; }
+            public int DialMode  { get; set; }
+            public int NeedleMode { get; set; }
+            public int DialBrightness { get; set; }
+            public int NeedleBrightness { get; set; }
         }
 
         void ReportSystemInfo()
@@ -438,9 +453,35 @@ namespace PCluster_PC_Utility
             else
             {
                 // Allow the form to close normally
+                string jsonFilePath = Path.Combine("config.json");
+                // Deserialize JSON to Config object
                 notifyIcon1.Visible = false;  // Hide the icon if the form is actually closing
+                // Serialize the updated config object back to JSON
+                var config = new Config
+                {
+                    Display1 = PCluster1.disp1.DisplayedInfo,
+                    Display2 = PCluster1.disp2.DisplayedInfo,
+                    Display3 = PCluster1.disp3.DisplayedInfo,
+                    Display4 = PCluster1.disp4.DisplayedInfo,
+                    DialColor = ColorToHexString(btnDialColor.BackColor),
+                    NeedleColor = ColorToHexString(btnNeedleColor.BackColor),
+                    DialMode = PCluster1.LEDValue,
+                    DialBrightness = trackBar1.Value,
+                    NeedleBrightness = trackBar2.Value,
+                };
+                string jsonContent = JsonConvert.SerializeObject(config, Formatting.Indented);
+
+                // Write the updated JSON content back to the file
+                File.WriteAllText(jsonFilePath, jsonContent);
+
                 hardwareUpdater.Abort();
             }
+        }
+
+        // Function to get hex string for any color
+        string ColorToHexString(Color color)
+        {
+            return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
         }
 
         private void exitMenuItem2_Click_1(object sender, EventArgs e)
@@ -494,6 +535,12 @@ namespace PCluster_PC_Utility
             if (colorDialog1.ShowDialog() == DialogResult.OK)
                 btnNeedleColor.BackColor = colorDialog1.Color;
             PCluster1.LEDneedleColor = btnNeedleColor.BackColor;
+        }
+
+        // Function to convert a hex string to a Color object
+        private Color HexStringToColor(string hex)
+        {
+            return ColorTranslator.FromHtml(hex);
         }
     }
 }

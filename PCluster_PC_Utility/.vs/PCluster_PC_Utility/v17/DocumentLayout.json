@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\pcluster_pc_utility\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|c:\\repos\\pcluster_software\\pcluster_pc_utility\\pcluster_pc_utility\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|solutionrelative:pcluster_pc_utility\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\pcluster_pc_utility\\pclusterdevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|solutionrelative:pcluster_pc_utility\\pclusterdevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\pcluster_pc_utility\\form1.resx||{FF4D6ACA-9352-4A5F-821E-F4D6EBDCAB11}",
@@ -13,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\pcluster_pc_utility\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|solutionrelative:pcluster_pc_utility\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|c:\\repos\\pcluster_software\\pcluster_pc_utility\\pcluster_pc_utility\\pclusterdevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|solutionrelative:pcluster_pc_utility\\pclusterdevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\pcluster_pc_utility\\form1.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -28,9 +28,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\pcluster_pc_utility\\config.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|solutionrelative:pcluster_pc_utility\\config.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6E9E574F-8576-4CE1-A81B-EA4EF2DE2FB6}|PCluster_PC_Utility\\PCluster_PC_Utility.csproj|c:\\repos\\pcluster_software\\pcluster_pc_utility\\pcluster_pc_utility\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|5e9a8ac2-4f34-4521-858f-4c248ba31532"
     }
   ],
   "DocumentGroupContainers": [
@@ -51,8 +48,7 @@
               "ToolTip": "C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\PCluster_PC_Utility\\PCluster_PC_Utility.csproj",
               "RelativeToolTip": "PCluster_PC_Utility\\PCluster_PC_Utility.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-08-08T16:11:18.31Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-08T16:11:18.31Z"
             },
             {
               "$type": "Document",
@@ -62,32 +58,31 @@
               "RelativeDocumentMoniker": "PCluster_PC_Utility\\Form1.cs",
               "ToolTip": "C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\PCluster_PC_Utility\\Form1.cs",
               "RelativeToolTip": "PCluster_PC_Utility\\Form1.cs",
-              "ViewState": "AQIAAPYAAAAAAAAAAAAwwHIBAAAAAAAA",
+              "ViewState": "AQIAAGYAAAAAAAAAAAAowH8AAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-25T23:31:05.516Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Form1.resx",
               "DocumentMoniker": "C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\PCluster_PC_Utility\\Form1.resx",
               "RelativeDocumentMoniker": "PCluster_PC_Utility\\Form1.resx",
               "ToolTip": "C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\PCluster_PC_Utility\\Form1.resx",
               "RelativeToolTip": "PCluster_PC_Utility\\Form1.resx",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2024-06-13T05:01:08.738Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-13T05:01:08.738Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "PClusterDevice.cs",
               "DocumentMoniker": "C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\PCluster_PC_Utility\\PClusterDevice.cs",
               "RelativeDocumentMoniker": "PCluster_PC_Utility\\PClusterDevice.cs",
               "ToolTip": "C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\PCluster_PC_Utility\\PClusterDevice.cs",
               "RelativeToolTip": "PCluster_PC_Utility\\PClusterDevice.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAQwBQAAAAnAAAA",
+              "ViewState": "AQIAABoAAAAAAAAAAAAswBIAAAAUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-25T23:31:05.67Z",
               "EditorCaption": ""
@@ -106,15 +101,14 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\PCluster_PC_Utility\\Form1.cs",
               "RelativeDocumentMoniker": "PCluster_PC_Utility\\Form1.cs",
               "ToolTip": "C:\\Repos\\PCluster_Software\\PCluster_PC_Utility\\PCluster_PC_Utility\\Form1.cs [Design]",
               "RelativeToolTip": "PCluster_PC_Utility\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-25T23:31:05.672Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-05-25T23:31:05.672Z"
             },
             {
               "$type": "Document",
@@ -126,8 +120,7 @@
               "RelativeToolTip": "PCluster_PC_Utility\\Form1.Designer.cs",
               "ViewState": "AQIAADYBAAAAAAAAAAAcwEkBAABSAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-25T23:31:05.673Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-25T23:31:05.673Z"
             }
           ]
         }
