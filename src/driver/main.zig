@@ -3,7 +3,6 @@ const common = @import("PClusterCommon");
 const PClusterConfig = common.PClusterConfig;
 const SystemInformation = common.SystemInformation;
 const Mutexed = common.Mutexed;
-const builtin = @import("builtin");
 
 const PCluster = switch (@import("builtin").os.tag) {
     .linux => @import("linux/PCluster.zig"),
@@ -19,7 +18,7 @@ pub fn main() !void {
     _ = allocator;
 
     var pcluster = Mutexed(PCluster).init(try .init(.default));
-    var sys_info: SystemInformation = .default;
+    var sys_info: SystemInformation = .init;
 
     const config_listener_thread = try std.Thread.spawn(.{}, configUpdaterTask, .{&pcluster});
     defer config_listener_thread.detach();
@@ -28,7 +27,7 @@ pub fn main() !void {
     while (true) {
         try sys_info.updateAll();
         for (0..20) |_| {
-            try pcluster.get().writeReport(sys_info);
+            try pcluster.acquire().writeReport(sys_info);
             pcluster.release();
             std.Thread.sleep(std.time.ns_per_ms * 10);
         }
@@ -37,15 +36,19 @@ pub fn main() !void {
 }
 
 pub fn configUpdaterTask(pcluster: *Mutexed(PCluster)) !void {
-    const localhost = try std.net.Address.parseIp("127.0.0.1", common.default_port);
-    var server = try localhost.listen(.{ .reuse_port = true, .reuse_address = true, .kernel_backlog = 1 });
+    const localhost = comptime std.net.Address.parseIp("127.0.0.1", common.default_port) catch unreachable;
+    var server = localhost.listen(.{ .reuse_port = true, .reuse_address = true, .kernel_backlog = 1 }) catch |e| {
+        std.debug.print("Error while starting server: {}, exiting...\n", .{e});
+        std.process.exit(1);
+    };
+
     while (true) {
         const client = try server.accept();
 
         while (true) {
             // TODO: listen for commands, not just raw configs
             const config = PClusterConfig.readFrom(client.stream.reader()) catch break;
-            pcluster.get().config = config;
+            pcluster.acquire().config = config;
             pcluster.release();
         }
     }

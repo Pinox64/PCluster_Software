@@ -12,7 +12,7 @@ cpu_usage_percent: f64,
 cpu_temperature_celsius: f64,
 memory_usage_percent: f64,
 
-pub const default = SystemInformation{
+pub const init = SystemInformation{
     .cpu_usage_percent = 0,
     .cpu_temperature_celsius = 0,
     .memory_usage_percent = 0,

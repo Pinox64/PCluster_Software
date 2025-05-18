@@ -19,7 +19,7 @@ pub fn Mutexed(T: type) type {
             };
         }
 
-        pub fn get(self: *Self) *T {
+        pub fn acquire(self: *Self) *T {
             self.mutex.lock();
             return &self.value;
         }

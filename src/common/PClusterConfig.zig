@@ -85,6 +85,7 @@ pub fn readFrom(reader: anytype) !PClusterConfig {
 }
 
 pub fn writeTo(config: PClusterConfig, writer: anytype) !void {
+    // INFO: Instead of using serial, use std.zig.zon.stringify.serialize instead? Use compression ?
     try serial.serialize(config, writer, .little);
 }
 
@@ -129,7 +130,7 @@ test "report SystemInformationNotSupported error" {
     const config = PClusterConfig{
         .displays = [4]PClusterConfig.DisplayInfo{ .cpu_usage, .cpu_temperature, .mem_usage, @enumFromInt(255) },
     };
-    const info: SystemInformation = .default;
+    const info: SystemInformation = .init;
 
     var buffer: [20]u8 = undefined;
     try std.testing.expectError(Error.SystemInformationNotSupported, config.writeReport(&buffer, info));

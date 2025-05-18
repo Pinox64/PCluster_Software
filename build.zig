@@ -31,18 +31,32 @@ pub fn build(b: *std.Build) void {
     const run_driver_step = b.step("run_driver", "Run the driver");
     run_driver_step.dependOn(&run_driver_cmd.step);
 
+    // UI dependencies
+    const zclay_dep = b.dependency("zclay", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
+    const raylib_dep = b.dependency("raylib_zig", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
     // Compiling, installing and running the UI.
     const ui_exe_mod = b.createModule(.{
         .root_source_file = b.path("src/ui/main.zig"),
         .target = target,
         .optimize = optimize,
     });
+    ui_exe_mod.addImport("raylib", raylib_dep.module("raylib"));
+    ui_exe_mod.addImport("zclay", zclay_dep.module("zclay"));
     ui_exe_mod.addImport("PClusterCommon", common_mod);
     const ui_exe = b.addExecutable(.{
         .name = "PCluster_UI",
         .root_module = ui_exe_mod,
         .use_llvm = false,
     });
+    ui_exe.linkLibrary(raylib_dep.artifact("raylib"));
     b.installArtifact(ui_exe);
     const run_ui_cmd = b.addRunArtifact(ui_exe);
     run_ui_cmd.step.dependOn(b.getInstallStep());

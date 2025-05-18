@@ -3,4 +3,4 @@ pub const PClusterConfig = @import("PClusterConfig.zig");
 pub const SystemInformation = @import("SystemInformation.zig");
 pub const Mutexed = @import("Mutexed.zig").Mutexed;
 
-pub const default_port: u16 = 32569;
+pub const default_port: u16 = 80;
