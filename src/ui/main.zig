@@ -80,8 +80,7 @@ pub fn main() !void {
     }
 }
 
-var out_packet_queue = std.fifo.LinearFifo(protocol.DriverBoundPacket, .{ .Static = 64 }).init();
-var out_packet_sema = std.Thread.Semaphore{};
+var out_packet_queue = common.ThreadSafeQueue(protocol.DriverBoundPacket, 64).init;
 
 pub fn connectionWithDriverTask(allocator: Allocator) void {
     while (true) {
@@ -97,13 +96,11 @@ pub fn connectWithDriver(allocator: Allocator) !void {
     driver_connected.set(true);
     defer driver_connected.set(false);
 
-    out_packet_queue.head = 0;
-    out_packet_sema = .{};
-    try out_packet_queue.writeItem(protocol.DriverBoundPacket{ .request_protocol_version = {} });
-    out_packet_sema.post();
+    out_packet_queue = .init;
+    try out_packet_queue.writeItem(.{ .request_protocol_version = {} });
     const writer_thread = try std.Thread.spawn(.{}, driverWriteLoop, .{conn.writer()});
     defer {
-        out_packet_sema.post();
+        out_packet_queue.writeItem(.{ .disconnect = {} }) catch {};
         writer_thread.join();
     }
     driverReadLoop(allocator, conn.reader());
@@ -113,11 +110,13 @@ pub fn driverWriteLoop(unbuffered_writer: anytype) void {
     var buffered_writer = std.io.bufferedWriter(unbuffered_writer);
     const writer = buffered_writer.writer();
     while (true) {
-        out_packet_sema.wait();
-        const packet = out_packet_queue.readItem() orelse return;
-        std.debug.print("out_packet: {any}\n", .{packet});
+        const packet = out_packet_queue.readItem();
+
         packet.write(writer) catch return;
         buffered_writer.flush() catch return;
+
+        // Used to end the thread
+        if (packet == .disconnect) return;
     }
 }
 
@@ -130,7 +129,6 @@ pub fn driverReadLoop(allocator: Allocator, reader: anytype) void {
             .request_protocol_version_response => |p| {
                 if (protocol.version.eql(p) == false) {
                     out_packet_queue.writeItem(.{ .disconnect = {} }) catch return;
-                    out_packet_sema.post();
                 }
             },
             .request_system_information_response => |p| {
