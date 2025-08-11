@@ -17,9 +17,7 @@ const white: clay.Color = .{ 250, 250, 255, 255 };
 const black = colorFromHexString("000000") catch unreachable;
 const background_color = colorFromHexString("121212") catch unreachable;
 
-const State = struct {
-    dial_dropdowns: [4]bool = @splat(false),
-};
+const State = struct {};
 
 pub var state = State{};
 
