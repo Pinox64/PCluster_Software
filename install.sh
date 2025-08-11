@@ -11,9 +11,8 @@ sudo udevadm control --reload-rules
 sudo udevadm trigger
 
 # If a PCluster in plugged in ask to replug it
-# if grep -qE "HID_ID.*1A86.*FE07" /sys/class/hidraw/*/device/uevent; then
 if cd /sys/class/hidraw; ls | xargs readlink | grep -q "1A86:FE07"; then
-    echo "Unplug and replug your PCluster if it is currently plugged"
+    echo "Unplug and replug your PCluster for the changes to take effect!"
 fi
 
 echo "The PCluster driver has been installed!"
