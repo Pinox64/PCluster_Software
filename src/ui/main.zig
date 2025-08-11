@@ -18,8 +18,17 @@ pub fn main() !void {
     defer _ = debug_allocator.deinit();
     const allocator = debug_allocator.allocator();
 
+    var envmap = try std.process.getEnvMap(allocator);
+    defer envmap.deinit();
+
     var driver_connection_thread = try std.Thread.spawn(.{}, connectionWithDriverTask, .{});
     driver_connection_thread.detach();
+
+    var pcluster_config_file = try common.system.getConfigFile(envmap);
+    defer pcluster_config_file.close();
+    const read_config = PClusterConfig.loadFromReader(allocator, pcluster_config_file.reader()) catch PClusterConfig.default;
+    pcluster_config.set(read_config);
+    try out_packet_queue.writeItem(.{ .set_config = read_config });
 
     const clay_memory = try allocator.alloc(u8, clay.minMemorySize());
     defer allocator.free(clay_memory);
@@ -32,7 +41,7 @@ pub fn main() !void {
         .msaa_4x_hint = true,
         .window_resizable = true,
     });
-    rl.initWindow(1280, 720, "PCluster controll software");
+    rl.initWindow(1280, 720, "PCluster control software");
     defer rl.closeWindow();
     rl.setTargetFPS(20);
 
