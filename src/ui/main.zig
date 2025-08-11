@@ -21,13 +21,13 @@ pub fn main() !void {
     var envmap = try std.process.getEnvMap(allocator);
     defer envmap.deinit();
 
-    var driver_connection_thread = try std.Thread.spawn(.{}, connectionWithDriverTask, .{});
-    driver_connection_thread.detach();
-
     var pcluster_config_file = try common.system.getConfigFile(envmap);
     const read_config = PClusterConfig.loadFromReader(allocator, pcluster_config_file.reader()) catch PClusterConfig.default;
     pcluster_config_file.close();
     pcluster_config.set(read_config);
+
+    var driver_connection_thread = try std.Thread.spawn(.{}, connectionWithDriverTask, .{});
+    driver_connection_thread.detach();
     try out_packet_queue.writeItem(.{ .set_config = read_config });
 
     const clay_memory = try allocator.alloc(u8, clay.minMemorySize());
