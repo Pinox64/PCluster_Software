@@ -25,8 +25,8 @@ pub fn main() !void {
     driver_connection_thread.detach();
 
     var pcluster_config_file = try common.system.getConfigFile(envmap);
-    defer pcluster_config_file.close();
     const read_config = PClusterConfig.loadFromReader(allocator, pcluster_config_file.reader()) catch PClusterConfig.default;
+    pcluster_config_file.close();
     pcluster_config.set(read_config);
     try out_packet_queue.writeItem(.{ .set_config = read_config });
 
@@ -70,14 +70,12 @@ pub fn main() !void {
         });
 
         var timer = try std.time.Timer.start();
-        const layout_state = layout.State{
-            .driver_connected = driver_connected.get(),
-            .pcluster_connected = pcluster_connected.get(),
-            .config = pcluster_config.get(),
-        };
+        layout.state.driver_connected = driver_connected.get();
+        layout.state.pcluster_connected = pcluster_connected.get();
+        layout.state.config = pcluster_config.get();
 
         clay.beginLayout();
-        layout.layout(layout_state);
+        layout.layout();
         var render_commands = clay.endLayout();
         const ns = timer.lap();
         _ = ns;
@@ -138,13 +136,18 @@ pub fn driverWriteLoop(unbuffered_writer: anytype) void {
 
 pub fn driverReadLoop(allocator: Allocator, reader: anytype) void {
     while (true) {
-        const in_packet = protocol.ControllerBoundPacket.read(allocator, reader) catch break;
+        const in_packet = protocol.ControllerBoundPacket.read(allocator, reader) catch return;
         defer in_packet.deinit(allocator);
 
         switch (in_packet) {
             .disconnect => return,
-            .set_pcluster_plugged => |p| pcluster_connected.set(p),
             .request_system_information_response => |p| system_information.set(p),
+            .set_pcluster_plugged => |p| {
+                pcluster_connected.set(p);
+                if (p) {
+                    out_packet_queue.writeItem(.{ .set_config = pcluster_config.get() }) catch return;
+                }
+            },
             .request_protocol_version_response => |p| {
                 if (protocol.version.eql(p) == false) {
                     out_packet_queue.writeItem(.{ .disconnect = {} }) catch return;

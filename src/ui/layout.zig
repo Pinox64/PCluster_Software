@@ -11,13 +11,16 @@ const white: clay.Color = .{ 250, 250, 255, 255 };
 const black = colorFromHexString("000000") catch unreachable;
 const background_color = colorFromHexString("121212") catch unreachable;
 
-pub const State = struct {
-    driver_connected: bool,
-    pcluster_connected: bool,
-    config: PClusterConfig,
+const State = struct {
+    driver_connected: bool = false,
+    pcluster_connected: bool = false,
+    dial_dropdowns: [4]bool = @splat(false),
+    config: PClusterConfig = .default,
 };
 
-pub fn layout(state: State) void {
+pub var state = State{};
+
+pub fn layout() void {
     clay.UI()(clay.ElementDeclaration{
         .id = .ID("Background"),
         .background_color = background_color,
@@ -44,7 +47,7 @@ pub fn layout(state: State) void {
             .background_color = .{ 0, 0, 0, 40 },
         })({
             for (0..4) |i| {
-                layoutDial(state, @intCast(i));
+                layoutDial(@intCast(i));
             }
         });
 
@@ -111,7 +114,7 @@ pub fn layout(state: State) void {
     });
 }
 
-pub fn layoutDial(state: State, index: u32) void {
+pub fn layoutDial(index: u32) void {
     const width = 200;
     const height = 200;
 
