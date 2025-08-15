@@ -197,10 +197,15 @@ pub fn layoutDial(index: u32) void {
                 pub fn onHoverFn(element_id: clay.ElementId, pointer_data: clay.PointerData, dial_index: usize) void {
                     std.debug.assert(dial_index < 4);
                     _ = element_id;
-                    if (pointer_data.state != .pressed_this_frame) return;
+                    if (pointer_data.state != .pressed_this_frame and state.scroll_delta.y == 0) return;
                     const config = pcluster_config.acquire();
                     defer pcluster_config.release();
-                    config.displays[dial_index] = config.displays[dial_index].next();
+
+                    if (pointer_data.state == .pressed_this_frame or state.scroll_delta.y > 0) {
+                        config.displays[dial_index] = config.displays[dial_index].nextN(1);
+                    } else {
+                        config.displays[dial_index] = config.displays[dial_index].nextN(-1);
+                    }
                 }
             }).onHoverFn;
 

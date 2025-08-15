@@ -23,10 +23,10 @@ pub const DisplayInfo = enum(u8) {
     gpu_usage = 4,
     gpu_temperature = 5,
 
-    pub fn next(info: DisplayInfo) DisplayInfo {
+    pub fn nextN(info: DisplayInfo, n: i8) DisplayInfo {
         var val: u8 = @intFromEnum(info);
-        val += 1;
-        if (val > @intFromEnum(DisplayInfo.gpu_temperature)) val = 0;
+        val +%= @bitCast(n);
+        val %= std.meta.fields(DisplayInfo).len;
         return @enumFromInt(val);
     }
 };

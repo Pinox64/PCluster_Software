@@ -68,7 +68,7 @@ pub fn main() !void {
             .y = layout.state.mouse_position.y,
         }, rl.isMouseButtonDown(.left));
 
-        layout.state.scroll_delta = rl.getMouseWheelMoveV().multiply(.{ .x = 6, .y = 6 });
+        layout.state.scroll_delta = rl.getMouseWheelMoveV().multiply(.{ .x = 10, .y = 10 });
         clay.updateScrollContainers(
             false,
             .{ .x = layout.state.scroll_delta.x, .y = layout.state.scroll_delta.y },
