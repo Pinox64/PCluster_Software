@@ -30,6 +30,7 @@ pub fn layout() void {
         .id = .ID("Background"),
         .background_color = background_color,
         .layout = .{
+            .direction = .top_to_bottom,
             .sizing = .{ .h = .grow, .w = .grow },
             .padding = .all(16),
             .child_alignment = .{
@@ -54,6 +55,19 @@ pub fn layout() void {
             for (0..4) |i| {
                 layoutDial(@intCast(i));
             }
+        });
+
+        clay.UI()(clay.ElementDeclaration{
+            .layout = .{
+                .direction = .left_to_right,
+                .padding = .all(5),
+                .child_gap = 4,
+            },
+        })({
+            const pcluster_config_ptr = pcluster_config.acquire();
+            defer pcluster_config.release();
+            layoutColorChoosingWidget("Dial", &pcluster_config_ptr.dial);
+            layoutColorChoosingWidget("Needle", &pcluster_config_ptr.needle);
         });
 
         clay.UI()(clay.ElementDeclaration{
@@ -236,6 +250,139 @@ pub fn layoutStatusDot(text: []const u8, width: f32, color: clay.Color) void {
         clay.text(text, .{
             .color = white,
         });
+    });
+}
+
+pub fn layoutColorChoosingWidget(text: []const u8, current_color: *PClusterConfig.ColorAndBrightness) void {
+    @setEvalBranchQuota(10000);
+    const pure_red = comptime colorFromHexString("ff0000ff") catch unreachable;
+    const pure_green = comptime colorFromHexString("00ff00ff") catch unreachable;
+    const pure_blue = comptime colorFromHexString("0000ffff") catch unreachable;
+    const pure_white = comptime colorFromHexString("ffffffff") catch unreachable;
+    const shadow = comptime colorFromHexString("00000050") catch unreachable;
+
+    const incrementU8ByScrollingFn = (struct {
+        pub fn incrementU8ByScrollingFn(element_id: clay.ElementId, pointer_data: clay.PointerData, value: *u8) void {
+            _ = element_id;
+            _ = pointer_data;
+            var value_f32: f32 = @floatFromInt(value.*);
+            value_f32 += state.scroll_delta.y;
+            if (value_f32 <= 0) {
+                value.* = 0;
+            } else if (value_f32 >= 255) {
+                value.* = 255;
+            } else {
+                value.* = @intFromFloat(value_f32);
+            }
+        }
+    }).incrementU8ByScrollingFn;
+
+    clay.UI()(clay.ElementDeclaration{
+        .layout = .{
+            .direction = .top_to_bottom,
+            .child_gap = 16,
+            .padding = .all(4),
+            .child_alignment = .{ .x = .center },
+        },
+        .corner_radius = .all(4),
+        .background_color = shadow,
+    })({
+        clay.UI()(clay.ElementDeclaration{
+            .layout = .{
+                .child_gap = 4,
+                .padding = .all(4),
+            },
+        })({
+            clay.UI()(clay.ElementDeclaration{
+                .layout = .{
+                    .sizing = .{
+                        .w = .fixed(20),
+                        .h = .fixed(80),
+                    },
+                    .child_alignment = .{ .y = .bottom },
+                },
+                .background_color = shadow,
+            })({
+                clay.onHover(*u8, &current_color.color.r, incrementU8ByScrollingFn);
+                clay.UI()(clay.ElementDeclaration{
+                    .layout = .{
+                        .sizing = .{
+                            .w = .fixed(20),
+                            .h = .fixed(@as(f32, @floatFromInt(current_color.color.r)) * 79 / 255 + 1),
+                        },
+                    },
+                    .background_color = pure_red,
+                })({});
+            });
+
+            clay.UI()(clay.ElementDeclaration{
+                .layout = .{
+                    .sizing = .{
+                        .w = .fixed(20),
+                        .h = .fixed(80),
+                    },
+                    .child_alignment = .{ .y = .bottom },
+                },
+                .background_color = shadow,
+            })({
+                clay.onHover(*u8, &current_color.color.g, incrementU8ByScrollingFn);
+                clay.UI()(clay.ElementDeclaration{
+                    .layout = .{
+                        .sizing = .{
+                            .w = .fixed(20),
+                            .h = .fixed(@as(f32, @floatFromInt(current_color.color.g)) * 79 / 255 + 1),
+                        },
+                    },
+                    .background_color = pure_green,
+                })({});
+            });
+
+            clay.UI()(clay.ElementDeclaration{
+                .layout = .{
+                    .sizing = .{
+                        .w = .fixed(20),
+                        .h = .fixed(80),
+                    },
+                    .child_alignment = .{ .y = .bottom },
+                },
+                .background_color = shadow,
+            })({
+                clay.onHover(*u8, &current_color.color.b, incrementU8ByScrollingFn);
+                clay.UI()(clay.ElementDeclaration{
+                    .layout = .{
+                        .sizing = .{
+                            .w = .fixed(20),
+                            .h = .fixed(@as(f32, @floatFromInt(current_color.color.b)) * 79 / 255 + 1),
+                        },
+                    },
+                    .background_color = pure_blue,
+                })({});
+            });
+
+            clay.UI()(clay.ElementDeclaration{
+                .layout = .{
+                    .sizing = .{
+                        .w = .fixed(20),
+                        .h = .fixed(80),
+                    },
+                    .child_alignment = .{ .y = .bottom },
+                },
+                .background_color = shadow,
+            })({
+                clay.onHover(*u8, &current_color.brightness, incrementU8ByScrollingFn);
+                clay.UI()(clay.ElementDeclaration{
+                    .layout = .{
+                        .sizing = .{
+                            .w = .fixed(20),
+                            .h = .fixed(@as(f32, @floatFromInt(current_color.brightness)) * 79 / 255 + 1),
+                        },
+                    },
+                    .background_color = pure_white,
+                })({});
+            });
+        });
+
+        clay.text(text, .{ .color = white });
     });
 }
 

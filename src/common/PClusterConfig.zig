@@ -14,6 +14,11 @@ pub const Color = struct {
     b: u8 = 0,
 };
 
+pub const ColorAndBrightness = struct {
+    color: Color = .{},
+    brightness: u8 = 100,
+};
+
 pub const DisplayInfo = enum(u8) {
     off = 0,
     cpu_usage = 1,
@@ -34,20 +39,10 @@ pub const LEDMode = enum(u8) {
     solid = 1,
 };
 
-pub const Dial = struct {
-    brightness: u8 = 100,
-    color: Color = .{},
-};
-
-pub const Needle = struct {
-    brightness: u8 = 100,
-    color: Color = .{},
-};
-
 displays: [4]DisplayInfo = @splat(.off),
 led_mode: LEDMode = .solid,
-dial: Dial = .{},
-needle: Needle = .{},
+dial: ColorAndBrightness = .{},
+needle: ColorAndBrightness = .{},
 update_period_ms: u64 = 3000,
 
 pub const default = PClusterConfig{
