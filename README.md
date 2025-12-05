@@ -12,7 +12,7 @@ This repository contains the platform-specific software required to communicate 
 - Four dynamic label screens
 - Lightweight Linux backend + UI
 - Separate Windows and Linux implementations
-- Source-available with protections against commercial cloning
+- The code is source-available with protections against commercial cloning
 
 ## Installation (Linux)
 
